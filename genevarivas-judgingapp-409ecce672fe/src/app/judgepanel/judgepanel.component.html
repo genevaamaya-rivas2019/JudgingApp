@@ -1,0 +1,79 @@
+<div class="card" [hidden]="isShow">
+    <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Contestant Rating</h3>
+    <div class="card-body">
+
+        <p>Judge Name:&nbsp;{{fname}}</p>
+        <p>Event:&nbsp;{{event1}}</p>
+
+        <div id="table" class="table-editable">
+            <span class="table-add float-right mb-3 mr-2">
+                <a class="text-success" (click)="frame.show()">
+                    <mdb-icon fas icon="plus" size="2x"></mdb-icon>
+                </a>
+            </span>
+            <!-- <p>Contestant Name: &nbsp;{{tempName}}</p> -->
+            <table class="table table-bordered table-responsive-md table-striped text-center">
+                <thead>
+                    <th>Contestant Name</th>
+                    <th *ngFor="let Col of formData; let i = index">{{Col.criteria}}&nbsp;({{Col.percentage}}%)</th>
+                    <th>Total</th>
+                </thead>
+                <tbody *ngFor="let model of array; let i = index ">
+                    <tr>
+                        <td>{{model.name}}</td>
+                        <td>{{model.user[0]}}</td>
+                        <td>{{model.user[1]}}</td>
+                        <td>{{model.user[2]}}</td>
+                        <td>{{model.user[3]}}</td>
+                        <td>{{model.total}}%</td>
+                    </tr>
+                </tbody>
+            </table><br>
+            <button mdbBtn color="default" id="tally" class="waves-light" mdbWavesEffect (click)="final();isShow=true">Done</button>
+        </div>
+    </div>
+</div>
+
+<div mdbModal #frame="mdbModal" class="modal fade left" id="frameModalTop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Add Contestant</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="frame.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form #scoreForm="ngForm">
+                <div class="modal-body mx-3">
+                    <div class="md-form mb-5">
+                        <input type="text" [(ngModel)]="name" class="form-control" name="contestant" #Name="ngModel"
+                            mdbInput mdbValidate required>
+                        <label for="defaultForm-email">Name</label>
+                        <mdb-error *ngIf="Name.invalid && (Name.dirty || Name.touched) && Name.errors?.required">
+                            Name is required.
+                        </mdb-error>
+                        <mdb-success *ngIf="Name.valid && (Name.dirty || Name.touched)">Input valid
+                        </mdb-success>
+                    </div>
+                </div>
+                <div class="modal-body mx-3" *ngFor="let col of formData; let i = index">
+                    <div class="md-form mb-5">
+                        <input type="number" [(ngModel)]="ngmodels[i]" name="jfhjdf" class="form-control" #Percentage="ngModel"
+                            mdbInput mdbValidate required>
+                        <label for="defaultForm-email">{{col.criteria}}({{col.percentage}}%)</label>
+                        <mdb-error *ngIf="Percentage.invalid && (Percentage.dirty || Percentage.touched) && Percentage.errors?.required">
+                            Percentage is required and must be a number.
+                        </mdb-error>
+                        <mdb-success *ngIf="Percentage.valid && (Percentage.dirty || Percentage.touched)">Input valid
+                        </mdb-success>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button mdbBtn color="default" class="waves-light" (click)="add();frame.hide()" mdbWavesEffect>Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<app-formpage [hidden]="!isShow" [finalData]="finArray"></app-formpage>

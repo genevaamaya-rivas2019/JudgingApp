@@ -1,0 +1,36 @@
+body, html {
+  height: 100%;
+}
+.bg {
+  /* The image used */
+  background-image: url("https://www.wallpaperflare.com/static/314/474/497/abstract-minimalism-blue-black-wallpaper.jpg");
+
+  /* Half height */
+  height: 1025px;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+button{
+    margin-left: 55%;
+    margin-top: 15%;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.card1{
+  width: 40%;
+  margin-left: 20%;
+  color: aqua;
+  font-size: 50%;
+  background-color: transparent;
+}
+
+.card-title{
+  margin-top: 25%;
+  font-size: 70px;
+  font-family: 'Times New Roman', Times, serif;
+}

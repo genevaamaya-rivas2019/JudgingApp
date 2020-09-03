@@ -1,0 +1,188 @@
+<!-- Editable table -->
+<div class="card" [hidden]="isShow">
+    <div role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Fill in the information</h4>
+            </div>
+            <div class="modal-body mx-3">
+                <div class="md-form mb-5">
+                    <input type="text" [(ngModel)]="name" class="form-control" #Name="ngModel" mdbInput mdbValidate
+                        required>
+                    <label for="defaultForm-email">Judge Name</label>
+                    <!-- <mdb-error *ngIf="Criteria.invalid && (Criteria.dirty || Criteria.touched)">
+                                Input invalid
+                            </mdb-error> -->
+                    <mdb-error *ngIf="Name.invalid && (Name.dirty || Name.touched) && Name.errors?.required">
+                        Name is required.
+                    </mdb-error>
+                    <mdb-success *ngIf="Name.valid && (Name.dirty || Name.touched)">Input
+                        valid
+                    </mdb-success>
+                </div>
+                <div class="md-form mb-5">
+                    <input type="text" [(ngModel)]="event" class="form-control" #Event="ngModel" mdbInput mdbValidate
+                        required>
+                    <label for="defaultForm-email">Event/Competition</label>
+                    <mdb-error *ngIf="Event.invalid && (Event.dirty || Event.touched) && Event.errors?.required">
+                        Event is required.
+                    </mdb-error>
+                    <mdb-success *ngIf="Event.valid && (Event.dirty || Event.touched)">Input
+                        valid
+                    </mdb-success>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card" [hidden]="isShow">
+    <h3 class="card-header text-center font-weight-bold text-uppercase py-4">Criteria for Judging</h3>
+    <div class="card-body">
+        <div id="table" class="table-editable">
+            <span class="table-add float-right mb-3 mr-2">
+                <a class="text-success" (click)="frame.show()">
+                    <mdb-icon fas icon="plus" size="2x"></mdb-icon>
+                </a>
+            </span>
+            <table class="table table-bordered table-responsive-md table-striped text-center">
+                <tr>
+                    <th class="text-center">Number</th>
+                    <th class="text-center">Criteria</th>
+                    <th class="text-center">Percentage(%)</th>
+                    <th class="text-center">Action</th>
+                </tr>
+                <tr *ngFor="let crit of criteriaList; let id = index">
+                    <td>
+                        <span>{{id + 1}}</span>
+                    </td>
+                    <td>
+                        <span>{{crit.criteria}}</span>
+                    </td>
+                    <td>
+                        <span>{{crit.percentage}}%</span>
+                    </td>
+                    <td>
+                        <span class="table-remove">
+                            <button type="button" mdbBtn color="primary" rounded="true" size="sm" class="my-0"
+                                (click)="frame2.show();updateList(crit)">Edit</button>
+                            <button type="button" mdbBtn color="danger" rounded="true" size="sm" class="my-0"
+                                (click)="remove(crit.id)">Remove</button>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+            <span class="spanKuno">Total Percentage : {{Total}}%</span><br>
+            <button mdbBtn color="default" id="tally" class="waves-light" mdbWavesEffect
+                (click)="total();startJudge();isShow=true">Start
+                Judging</button>
+        </div>
+    </div>
+</div>
+<!-- Editable table -->
+<!-- <button type="button" mdbBtn color="default" rounded="true" data-toggle="modal" data-target="#basicExample" (click)="frame.show()"
+    mdbWavesEffect>Launch Modal</button> -->
+
+<div mdbModal #frame="mdbModal" class="modal fade left" id="frameModalTop" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Add Criteria</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="frame.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form #addForm="ngForm">
+                <div class="modal-body mx-3">
+                    <div class="md-form mb-5">
+                        <input type="text" [(ngModel)]="criteria" name="Crit" class="form-control" #Criteria="ngModel"
+                            mdbInput mdbValidate required>
+                        <label for="defaultForm-email">Criteria</label>
+                        <mdb-error
+                            *ngIf="Criteria.invalid && (Criteria.dirty || Criteria.touched) && Criteria.errors?.required">
+                            Criteria is required.
+                        </mdb-error>
+                        <mdb-success *ngIf="Criteria.valid && (Criteria.dirty || Criteria.touched)">Input
+                            valid
+                        </mdb-success>
+                    </div>
+                    <div class="md-form mb-5">
+                        <input type="number" [(ngModel)]="percentage" name="percent" class="form-control"
+                            #Percentage="ngModel" mdbInput mdbValidate required>
+                        <label for="defaultForm-email">Percentage (%)</label>
+                        <mdb-error
+                            *ngIf="Percentage.invalid && (Percentage.dirty || Percentage.touched) && Percentage.errors?.required">
+                            Percentage is required and must be a number.
+                        </mdb-error>
+                        <!-- <mdb-error *ngIf="Percentage.invalid && (Percentage.dirty || Percentage.touched) && Percentage.errors?.pattern">
+                            Percentage must be a number.
+                        </mdb-error> -->
+                        <mdb-success *ngIf="Percentage.valid && (Percentage.dirty || Percentage.touched)">Input
+                            valid
+                        </mdb-success>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button mdbBtn color="default" class="waves-light" [disabled]="!addForm.form.valid"
+                        (click)="add(addForm);frame.hide();total()" mdbWavesEffect>Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div mdbModal #frame2="mdbModal" class="modal fade left" id="frameModalTop" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Update Criteria</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="frame2.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form #editForm="ngForm">
+
+                <div class="modal-body mx-3">
+                    <div class="md-form mb-5">
+                        <input type="text" [(ngModel)]="editCriteria" name="EditCrit" class="form-control"
+                            #Criteria="ngModel" mdbInput mdbValidate required>
+                        <label for="defaultForm-email">Criteria</label>
+                        <!-- <mdb-error *ngIf="Criteria.invalid && (Criteria.dirty || Criteria.touched)">
+                        Input invalid
+                    </mdb-error> -->
+                        <mdb-error
+                            *ngIf="Criteria.invalid && (Criteria.dirty || Criteria.touched) && Criteria.errors?.required">
+                            Criteria is required.
+                        </mdb-error>
+                        <mdb-success *ngIf="Criteria.valid && (Criteria.dirty || Criteria.touched)">Input
+                            valid
+                        </mdb-success>
+                    </div>
+                    <div class="md-form mb-5">
+                        <input type="number" [(ngModel)]="editPercentage" name="editPercent" class="form-control"
+                            #Percentage="ngModel" mdbInput mdbValidate required>
+                        <label for="defaultForm-email">Percentage (%)</label>
+                        <mdb-error
+                            *ngIf="Percentage.invalid && (Percentage.dirty || Percentage.touched) && Percentage.errors?.required">
+                            Percentage is required and must be a number.
+                        </mdb-error>
+                        <!-- <mdb-error *ngIf="Percentage.invalid && (Percentage.dirty || Percentage.touched) && Percentage.errors?.pattern">
+                            Percentage must be a number.
+                        </mdb-error> -->
+                        <mdb-success *ngIf="Percentage.valid && (Percentage.dirty || Percentage.touched)">Input
+                            valid
+                        </mdb-success>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button mdbBtn color="default" class="waves-light" [disabled]="!editForm.form.valid"
+                        (click)="add(editForm);frame2.hide();total();edited=false;editForm.reset()"
+                        mdbWavesEffect>Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<app-judgepanel [hidden]="!isShow" [formData]="criteriaList" [fname]="tempName" [event1]="tempEvent"></app-judgepanel>

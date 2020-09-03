@@ -1,0 +1,43 @@
+@media all and (min-width: 768px) {
+    tr  {
+      td {
+        vertical-align: middle !important;
+      }
+      span {
+        &:not([class]) {
+          padding: 1rem 1rem;
+        }
+      }
+    }
+
+    .spanKuno{
+      margin-left: 36%;
+    }
+    #tally {
+      margin-left: 89%;
+  }
+  }
+body {
+    background-color: cornsilk;
+    padding-top: 100px;
+    padding-bottom: 50px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.form {
+    background-color: rgb(20, 10, 10);
+}
+
+th {
+    color: rgba(137, 219, 219, 0.925);
+}
+
+.tablehead {
+    color: aliceblue;
+}
+
+.text {
+    padding-bottom: 70px;
+    color: rgb(52, 194, 194)
+}

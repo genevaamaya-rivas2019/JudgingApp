@@ -1,0 +1,33 @@
+<body>
+
+    <div class="text">
+        <h2>Overall Rating </h2>
+    </div>
+
+
+    <div class=form>
+        <table mdbTable bordered="true">
+            <thead class="tablehead">
+                <tr>
+                    <th class="border border-info" *ngFor="let head of headElements" scope="col">{{head}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr mdbTableCol *ngFor="let el of finalData" ng-repeat="el in friends | orderBy:'-score'">
+                    <th class="border border-info" scope="row">{{el.name}}</th>
+                    <th class="border border-info">{{el.finScore}}</th>
+                    <th class="border border-info"></th>
+                    <th class="border border-info"></th>
+                    <th class="border border-info"></th>
+                    <th class="border border-info"></th>
+                    <th class="border border-info"></th>
+                    <th class="border border-info"></th>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+    <button (click)="swalOnFinal()">Done Judging</button>
+
+</body>
+
